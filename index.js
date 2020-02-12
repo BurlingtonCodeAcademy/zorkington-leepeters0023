@@ -37,3 +37,39 @@ On the door is a handwritten sign.`;
   console.log('Now write your code to make this work!');
   process.exit();
 }
+
+
+/* 
+at least 5 rooms
+  one locked
+players object
+  let player = {
+    inventory : []
+    health : 10
+    location, present and past : [] use this like a stack with pop and push 
+  }
+rooms object {
+  room = " "
+  story = " "
+  inventory = []
+  enter_event = 
+  exit_event = 
+  lock = locked true or false 
+}
+a person to interact with 
+prompts noting player status based on input / things acquired / persons interacted with
+a way to win (player acquires Rise and Shiner from KKD)
+a way to exit and start over // possibly a way to loose
+
+const readline = require('readline');
+const rl = readline.createInterface(process.stdin, process.stdout);
+function ask(questionText) {
+  return new Promise((resolve, reject) => {
+    rl.question(questionText, resolve);
+  });
+} 
+
+start()
+
+async function start() {
+  console.log
