@@ -10,6 +10,7 @@ function ask(questionText) {
 // remember the StateMachine lecture
 // https://bootcamp.burlingtoncodeacademy.com/lessons/cs/state-machines
 
+// | - - - - - room creation - - - - - |
 const roomLookUp = {
   'outside' : outside,
   'foyer' : foyer,
@@ -21,7 +22,29 @@ const roomLookUp = {
   'wMainSt' : wMainSt,
   'cityHallPark' : cityHallPark,
   'kdd' : kkd
+} 
+class Room {
+  constructor(desc, inv, unlocked) {
+    this.desc = desc
+    this.inv = inv
+    this.locked = unlocked 
+  }
 }
+ 
+function createRoom(inventory) {
+  return new Room(' ', [], unlocked) /
+}
+
+let outside = createRoom()
+let foyer = createRoom()
+let classRoom = createRoom()
+let kitchen = createRoom()
+let cityMarket = createRoom()
+let eMainSt = createRoom()
+Let uvmFrat = createRoom()
+let wMainSt = createRoom()
+let cityHallPark = createRoom()
+let kkd = createRoom() 
 
 // | - - - - - state machine - - - - - |
 
@@ -53,23 +76,7 @@ On the door is a handwritten sign.`;
   process.exit();
 }
 
-class Room {
-  constructor(desc, inv, locked) {
-    this.desc = desc
-    this.inv = inv
-    this.locked = locked
-  }
-}
- 
-let classroom = new Room 
 
-function outsideRoom(inventory) {
-  return new Room('You are outside', inventory, false) // allows us to easily pass in lots of different data
-  // at once while allowing for default values
-}
-
-let outsideOne = outsideRoom([])
-let outsideTwo = outsideRoom(['stick', 'rock','bug'])
 // ------ example of a state machine ------ 
 // this is where our look up table applies if we want our light or room status to map to an object rather than a string,
 // this way, we can refer to each room before its been initialized in the code and allows us to process strings as the come in from the user
