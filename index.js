@@ -48,19 +48,27 @@ let kkd = createRoom()
 
 // | - - - - - state machine - - - - - |
 
-let states = {
-  'roomOne': { canChangeTo: [ 'roomTwo' ] },
-  'roomTwo': { canChangeTo: [ 'roomThree' ] },
-  'roomThree': { canChangeTo: [ 'roomOne' ] }
+let location = {
+  'outside' : { canChangeTo: [ 'foyer', 'eMainSt', 'wMainSt' ] },
+  'foyer' : { canChangeTo: [ 'outside', 'classRoom' ] },
+  'classRoom' : { canChangeTo: [ 'kitchen' ] },
+  'kitchen' : { canChangeTo: [ 'classRoom' ] },
+  'cityMarket' : { canChangeTo: [ 'eMainSt' ] },
+  'eMainSt' : { canChangeTo: [ 'cityMarket', 'uvmFrat' ] },
+  'uvmFrat' : { canChangeTo: [ 'eMainSt' ] },
+  'wMainSt' : { canChangeTo: [ 'outside', 'cityHallPark', 'kkd' ] },
+  'cityHallPark' : { canChangeTo: [ 'wMainSt' ] },
+  'kdd' : { canChangeTo: [ 'wMainSt' ] }
 };
 
-let currentState = "green";
-function enterState(newState) {
-  let validTransitions = states[currentState].canChangeTo;
-  if (validTransitions.includes(newState)) {
-    currentState = newState;
+let currentLocation = "outside";
+
+function changeLocation(newLocation) {
+  let validTransitions = location[currentLocation].canChangeTo;
+  if (validTransitions.includes(newLocation)) {
+    currentLocation = newLocation;
   } else {
-    throw 'Invalid state transition attempted - from ' + currentState + ' to ' + newState;
+    throw 'Invalid state transition attempted - from ' + currentLocation + ' to ' + newLocation;
   }
 }
 
