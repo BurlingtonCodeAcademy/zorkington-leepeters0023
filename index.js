@@ -4,11 +4,27 @@ const readlineInterface = readline.createInterface(process.stdin, process.stdout
 function ask(questionText) {
   return new Promise((resolve, reject) => {
     readlineInterface.question(questionText, resolve);
-  });
+  }); 
 }
 
 // remember the StateMachine lecture
 // https://bootcamp.burlingtoncodeacademy.com/lessons/cs/state-machines
+
+const roomLookUp = {
+  'outside' : outside,
+  'foyer' : foyer,
+  'classRoom' : classRoom,
+  'kitchen' : kitchen,
+  'cityMarket' : cityMarket,
+  'eMainSt' : eMainSt,
+  'uvmFrat' : uvmFrat,
+  'wMainSt' : wMainSt,
+  'cityHallPark' : cityHallPark,
+  'kdd' : kkd
+}
+
+// | - - - - - state machine - - - - - |
+
 let states = {
   'roomOne': { canChangeTo: [ 'roomTwo' ] },
   'roomTwo': { canChangeTo: [ 'roomThree' ] },
@@ -16,7 +32,6 @@ let states = {
 };
 
 let currentState = "green";
-
 function enterState(newState) {
   let validTransitions = states[currentState].canChangeTo;
   if (validTransitions.includes(newState)) {
@@ -45,6 +60,8 @@ class Room {
     this.locked = locked
   }
 }
+ 
+let classroom = new Room 
 
 function outsideRoom(inventory) {
   return new Room('You are outside', inventory, false) // allows us to easily pass in lots of different data
@@ -56,10 +73,7 @@ let outsideTwo = outsideRoom(['stick', 'rock','bug'])
 // ------ example of a state machine ------ 
 // this is where our look up table applies if we want our light or room status to map to an object rather than a string,
 // this way, we can refer to each room before its been initialized in the code and allows us to process strings as the come in from the user
-let roomLookUp = {
-  'room1' = room1,
-  'room2' = room2,
-  // etc etc 
+
 }
 let states = {
   'green' : {allowableChange: ['yellow', 'flashing green']},
@@ -88,14 +102,7 @@ players object
     health : 10
     location, present and past : [] use this like a stack with pop and push 
   }
-rooms object {
-  room = " "
-  story = " "
-  inventory = []
-  enter_event = 
-  exit_event = 
-  lock = locked true or false 
-}
+
 a person to interact with 
 prompts noting player status based on input / things acquired / persons interacted with
 a way to win (player acquires Rise and Shiner from KKD)
@@ -113,3 +120,5 @@ start()
 
 async function start() {
   console.log
+
+  
