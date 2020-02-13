@@ -38,6 +38,46 @@ On the door is a handwritten sign.`;
   process.exit();
 }
 
+class Room {
+  constructor(desc, inv, locked) {
+    this.desc = desc
+    this.inv = inv
+    this.locked = locked
+  }
+}
+
+function outsideRoom(inventory) {
+  return new Room('You are outside', inventory, false) // allows us to easily pass in lots of different data
+  // at once while allowing for default values
+}
+
+let outsideOne = outsideRoom([])
+let outsideTwo = outsideRoom(['stick', 'rock','bug'])
+// ------ example of a state machine ------ 
+// this is where our look up table applies if we want our light or room status to map to an object rather than a string,
+// this way, we can refer to each room before its been initialized in the code and allows us to process strings as the come in from the user
+let roomLookUp = {
+  'room1' = room1,
+  'room2' = room2,
+  // etc etc 
+}
+let states = {
+  'green' : {allowableChange: ['yellow', 'flashing green']},
+  'flashing green' : {allowableChange: ['yellow']},
+  'yellow' : {allowableChange: ['flashing yellow', 'red']},
+  'red' : {allowableChange: ['flashing red', 'green']},
+  'flashing red' : {allowableChange: ['red']}
+}
+let lightStatus = 'green'
+function changeLight(change) {
+  if (states[lightStatus].allowableChange.includes(change)) {  // since allowable state transitions are arrays, we can use array methods!
+    lightStatus = change
+  } else {
+    throw('invalid state transition attempted') // throw exits the program 
+    // could also console.log a message
+  }
+}
+changeLight('yellow')
 
 /* 
 at least 5 rooms
