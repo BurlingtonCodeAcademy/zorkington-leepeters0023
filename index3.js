@@ -19,7 +19,7 @@ function showInventory() {
   console.log('You are carrying, ' + player.inventory.toString())
 }
 
-var rooms = {
+le rooms = {
   'outside': {canChangeTo: ['sign'],   // outside is also known as "182 Main St."
               welcomeMessage: `182 Main St.
               You are standing on Main Street between Church and South Winooski.
