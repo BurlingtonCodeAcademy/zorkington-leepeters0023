@@ -10,9 +10,13 @@ function ask(questionText) {
 
 let currentRoom = "outside";
 
-var player = {
+let player = {
   currentState: currentRoom, 
   inventory: []
+}
+
+function showInventory() {
+  console.log(player.inventory)
 }
 
 var rooms = {
@@ -57,28 +61,27 @@ function enterState(newState) {
 
 async function start() {
   console.log(rooms[currentRoom].welcomeMessage);
- 
+
   let answer = await ask('>_');
   while(answer !== 'exit') {
   if (answer == 'read sign') {
     enterState('sign')
     console.log(rooms[currentRoom].welcomeMessage);
     }
-
-    else if (answer == 'take sign') {
-      console.log ('That would be selfish. How will other students find their way?')
-    }
-
-    else if (answer =='open door')
+  if (answer === 'inventory') {
+    showInventory()
+  }
+else if (answer == 'take sign') {
+    console.log ('That would be selfish. How will other students find their way?')
+  }
+else if (answer == 'open door' || 'open')
     {
       console.log ('The door is locked. There is a keypad on the door handle.');
     }
-    
-    else if (answer == 'gargle')
-     {console.log('Sorry, I do not know how to gargle.');
-  } 
-  
-  else if (currentRoom == 'sign' && answer == 'enter code 12345' ||currentRoom == 'sign' && answer == 'key in 12345')
+else if (answer !== 'open' || 'open door')
+    {console.log('Sorry, I do not know how to ' + answer);
+ } 
+else if (currentRoom == 'sign' && answer == 'enter code 12345' || currentRoom == 'sign' && answer == 'key in 12345')
   {
     console.log('Success! The door opens. You enter the foyer and the door\nshuts behind you');
     enterState('foyer');
