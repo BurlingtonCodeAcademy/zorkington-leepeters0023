@@ -11,6 +11,7 @@ function ask(questionText) {
 // https://bootcamp.burlingtoncodeacademy.com/lessons/cs/state-machines
 
 // | - - - - - room creation - - - - - |
+
 const roomLookUp = {
   'outside' : outside,
   'foyer' : foyer,
@@ -46,6 +47,8 @@ let wMainSt = createRoom()
 let cityHallPark = createRoom()
 let kkd = createRoom() 
 
+// | - - - - - room creation - - - - - |
+
 // | - - - - - state machine - - - - - |
 
 let location = {
@@ -71,6 +74,23 @@ function changeLocation(newLocation) {
     throw 'Invalid state transition attempted - from ' + currentLocation + ' to ' + newLocation;
   }
 }
+// | - - - - - state machine - - - - - |
+
+// | - - - - player attributes - - - - |
+
+let player = {
+  inventory: [],
+  health: []
+  }
+
+let commands = {
+    affirmative: ['y', 'yes', 'ya', 'yeah', 'yeah'],
+    negative: ['no', 'n', 'nope', 'nay'],
+    direction: ['north', 'south', 'east', 'west'],
+    movement: ['go', 'move', 'enter', 'walk'],
+    actions: ['read', 'take', 'use', 'get', 'eat', 'buy', 'make', 'open', 'unlock', 'enter', 'give', 'drop', 'leave']
+  }
+// | - - - - player attributes - - - - |
 
 start();
 
