@@ -86,12 +86,21 @@ let player = {
 let commands = {
     affirmative: ['y', 'yes', 'ya', 'yeah', 'yeah'],
     negative: ['no', 'n', 'nope', 'nay'],
-    direction: ['north', 'south', 'east', 'west'],
+    direction: ['north', 'n', 'south', 's', 'east', 'e', 'west', 'w'],
     movement: ['go', 'move', 'enter', 'walk'],
     actions: ['read', 'take', 'use', 'get', 'eat', 'buy', 'make', 'open', 'unlock', 'enter', 'give', 'drop', 'leave']
   }
 // | - - - - player attributes - - - - |
+// | - - - - - action functions - - - - - |
+function pickUpItem(item) {
+  this.inventory.push(item)
+}
+function dropItem(item) {
+  this.inventory. // come back to this 
+}
 
+function 
+// | - - - - - action functions - - - - - |
 start();
 
 async function start() {
@@ -156,4 +165,3 @@ start()
 async function start() {
   console.log
 
-  
