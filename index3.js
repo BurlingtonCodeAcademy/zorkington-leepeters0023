@@ -16,7 +16,7 @@ let player = {
 }
 
 function showInventory() {
-  console.log(player.inventory)
+  console.log('You are carrying, ' + player.inventory.toString())
 }
 
 var rooms = {
@@ -63,34 +63,29 @@ async function start() {
   console.log(rooms[currentRoom].welcomeMessage);
 
   let answer = await ask('>_');
+  answer = inputConverter(answer) // standardizes input to lower case, trimmed, string
   while(answer !== 'exit') {
-  if (answer == 'read sign') {
+    if (answer == 'read sign') {
     enterState('sign')
     console.log(rooms[currentRoom].welcomeMessage);
-    }
-  if (answer === 'inventory') {
-    showInventory()
-  }
-else if (answer == 'take sign') {
+    console.log(currentRoom)
+    } 
+    else if (answer == 'take sign') {
     console.log ('That would be selfish. How will other students find their way?')
-  }
-else if (answer == 'open door' || 'open')
-    {
-      console.log ('The door is locked. There is a keypad on the door handle.');
-    }
-else if (answer !== 'open' || 'open door')
-    {console.log('Sorry, I do not know how to ' + answer);
- } 
-else if (currentRoom == 'sign' && answer == 'enter code 12345' || currentRoom == 'sign' && answer == 'key in 12345')
-  {
+    } 
+    else if (answer == 'open door' || 'open') { 
+    console.log ('The door is locked. There is a keypad on the door handle.')
+    } 
+    else if (answer !== 'open' || 'open door') {
+    console.log('Sorry, I do not know how to ' + answer)
+    } 
+    else if (currentRoom === 'sign' && answer === 'enter code 12345' || currentRoom === 'sign' && answer === 'key in 12345') {
     console.log('Success! The door opens. You enter the foyer and the door\nshuts behind you');
-    enterState('foyer');
+    enterState('foyer')
     console.log(rooms[currentRoom].welcomeMessage);
-  }
- 
- else if (answer == 'enter code 12345'||answer == 'key in 12345')
-    { 
-      enterState('outside')
+    } 
+    else if (answer == 'enter code 12345'||answer == 'key in 12345')
+    { enterState('outside')
       console.log(rooms[currentRoom].welcomeMessage);
     }
    else if (answer.includes("enter code ") && !answer.includes("12345")){
@@ -110,13 +105,20 @@ else if (currentRoom == 'sign' && answer == 'enter code 12345' || currentRoom ==
  else { 
     console.log("Sorry, I don't understand that.");
   }
-  
+  if (answer === 'inventory') {
+    showInventory()
+  }
   answer = await ask('>_');
   }
    process.exit();
 }
 
   // need to build in the 'i' || 'inventory' || 'take inventory' functionality to 
-  //    list the array of items you are carrying
+  // list the array of items you are carrying
 
 start();
+
+function inputConverter(string) { // standardizes input to lower case, trimmed, string
+  let converted = string.toString().trim().toLowerCase();
+  return converted;
+}
