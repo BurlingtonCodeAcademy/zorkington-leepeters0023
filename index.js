@@ -36,8 +36,8 @@ function createRoom(inventory) {
   return new Room(' ', [], unlocked) /
 }
 
-let outside = createRoom()
-let foyer = createRoom()
+let outside = createRoom('message a', [inventory])
+let foyer = createRoom('message b', [inventory b])
 let classRoom = createRoom()
 let kitchen = createRoom()
 let cityMarket = createRoom()
@@ -91,6 +91,7 @@ let commands = {
     actions: ['read', 'take', 'use', 'get', 'eat', 'buy', 'make', 'open', 'unlock', 'enter', 'give', 'drop', 'leave']
   }
 // | - - - - player attributes - - - - |
+
 // | - - - - - action functions - - - - - |
 function pickUpItem(item) {
   this.inventory.push(item)
@@ -112,6 +113,74 @@ On the door is a handwritten sign.`;
   console.log('Now write your code to make this work!');
   process.exit();
 }
+/* player begins game and is greeted with intro message
+
+if answer === actions.includes(answer)
+  console log the sign says x y z
+if answer === actions.includes(answer) 
+  player.inventory.push(item)
+
+call start function again
+
+answer = await ask ' what do you want to do?'
+if answer === actions.includes(answer), desired response here is for player to enter correctly door code
+if code === correct code 
+  currentlocation === foyer
+  console log foyer message
+else 
+  console log incorrect code 
+
+call start function again
+
+answer = await ask 'what do you want to ?'
+if answer === actions.includes(answer) // desired response, player goes up stairs to enter classroom
+  currentlocation === classroom
+  console log classroom message // desired action, player gets tea for bob "leave classroom" -> "enter kitchen"
+....
+
+call start function again
+
+answer = await ask 'what do you want to ?'
+currentlocation === kitchen
+console log kitchen message // desired action, player makes tea "make tea"
+if answer === actions.includes(answer) 
+  player.inventory.push(item)
+else 
+call start function again
+
+answer = await ask 'what do you want to ?'
+if answer === actions.includes(enter classroom)
+currentlocation === classroom
+console log new classroom message triggerd by second time player enters 
+  -- > Bob asks where is my tea?
+if answer === give tea to bob
+  player.inventory.pop[]
+  console.log here's a coupon for KKD!
+  player.push[coupon]
+
+call start function again
+
+answer = await ask 'what do you want to ?'
+if answer === actions.includes(leave classroom)
+ -> if kitchen, inventory of kitchen must no longer include tea
+ -> if foyer, must now be unlocked
+    desired action here is player enters foyer
+if answer === actions.includes(enter street, leave foyer, etc etc)
+currrentlocation === outside
+
+call start function again
+
+answer = await ask 'what do you want to ?'
+if answer === actions.include(e, east, east main)
+  currentlocation === eMainSt 
+  consoleLog eMainst Message
+
+call start function again
+answer = await ask 'what do you want to ?'
+if answer === actions.includes(city market, north, n)
+  console log cityMarket message
+  process.exit
+
 
 
 // ------ example of a state machine ------ 
