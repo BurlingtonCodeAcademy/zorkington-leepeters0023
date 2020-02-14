@@ -1,4 +1,4 @@
-const readline = require('readline');
+/*const readline = require('readline');
 const readlineInterface = readline.createInterface(process.stdin, process.stdout);
 
 function ask(questionText) {
@@ -6,11 +6,30 @@ function ask(questionText) {
     readlineInterface.question(questionText, resolve);
   }); 
 }
-
+*/
 // remember the StateMachine lecture
 // https://bootcamp.burlingtoncodeacademy.com/lessons/cs/state-machines
 
-// | - - - - - room creation - - - - - |
+// | - - - - - room creation begin - - - - - |
+
+class Room {
+  constructor(desc, inv, locked) {
+    this.desc = desc
+    this.inv = inv
+    this.locked = locked
+  }
+}
+
+let outside = createRoom('message a', [1, 2, 3], 'locked')
+let foyer = createRoom('message b', [5, 6, 7], 'locked')
+let classRoom = createRoom()
+let kitchen = createRoom()
+let cityMarket = createRoom()
+let eMainSt = createRoom()
+let uvmFrat = createRoom()
+let wMainSt = createRoom()
+let cityHallPark = createRoom()
+let kkd = createRoom()
 
 const roomLookUp = {
   'outside' : outside,
@@ -24,33 +43,19 @@ const roomLookUp = {
   'cityHallPark' : cityHallPark,
   'kdd' : kkd
 } 
-class Room {
-  constructor(desc, inv, unlocked) {
-    this.desc = desc
-    this.inv = inv
-    this.locked = unlocked 
-  }
-}
- 
-function createRoom(inventory) {
-  return new Room(' ', [], unlocked) /
+
+function createRoom(desc, inv, locked) {
+  return new Room(' ', [], 'locked')
 }
 
-let outside = createRoom('message a', [inventory])
-let foyer = createRoom('message b', [inventory b])
-let classRoom = createRoom()
-let kitchen = createRoom()
-let cityMarket = createRoom()
-let eMainSt = createRoom()
-Let uvmFrat = createRoom()
-let wMainSt = createRoom()
-let cityHallPark = createRoom()
-let kkd = createRoom() 
+console.log(outside)
+console.log(foyer)
 
-// | - - - - - room creation - - - - - |
+  
+// | - - - - - room creation end - - - - - |
 
-// | - - - - - state machine - - - - - |
-
+// | - - - - - state machine begin - - - - - |
+/*
 let location = {
   'outside' : { canChangeTo: [ 'foyer', 'eMainSt', 'wMainSt' ] },
   'foyer' : { canChangeTo: [ 'outside', 'classRoom' ] },
@@ -74,9 +79,12 @@ function changeLocation(newLocation) {
     throw 'Invalid state transition attempted - from ' + currentLocation + ' to ' + newLocation;
   }
 }
-// | - - - - - state machine - - - - - |
 
-// | - - - - player attributes - - - - |
+changeLocation(foyer)
+
+// | - - - - - state machine end - - - - - |
+
+// | - - - - player attributes begin - - - - |
 
 let player = {
   inventory: [],
@@ -90,18 +98,8 @@ let commands = {
     movement: ['go', 'move', 'enter', 'walk'],
     actions: ['read', 'take', 'use', 'get', 'eat', 'buy', 'make', 'open', 'unlock', 'enter', 'give', 'drop', 'leave']
   }
-// | - - - - player attributes - - - - |
+// | - - - - player attributes end - - - - |
 
-// | - - - - - action functions - - - - - |
-function pickUpItem(item) {
-  this.inventory.push(item)
-}
-function dropItem(item) {
-  this.inventory. // come back to this 
-}
-
-function 
-// | - - - - - action functions - - - - - |
 start();
 
 async function start() {
@@ -109,14 +107,13 @@ async function start() {
 You are standing on Main Street between Church and South Winooski.
 There is a door here. A keypad sits on the handle.
 On the door is a handwritten sign.`;
-  let answer = await ask(welcomeMessage);
-  console.log('Now write your code to make this work!');
-  process.exit();
-}
-/* player begins game and is greeted with intro message
+let answer = await ask(welcomeMessage);
+if (answer === commands.actions.includes[answer]) {
+  currentLocation === foyer
+  console.log(currentLocation)
+} 
 
-if answer === actions.includes(answer)
-  console log the sign says x y z
+  /*console log the sign says x y z
 if answer === actions.includes(answer) 
   player.inventory.push(item)
 
@@ -180,57 +177,13 @@ answer = await ask 'what do you want to ?'
 if answer === actions.includes(city market, north, n)
   console log cityMarket message
   process.exit
+*/
 
 
 
-// ------ example of a state machine ------ 
-// this is where our look up table applies if we want our light or room status to map to an object rather than a string,
-// this way, we can refer to each room before its been initialized in the code and allows us to process strings as the come in from the user
 
-}
-let states = {
-  'green' : {allowableChange: ['yellow', 'flashing green']},
-  'flashing green' : {allowableChange: ['yellow']},
-  'yellow' : {allowableChange: ['flashing yellow', 'red']},
-  'red' : {allowableChange: ['flashing red', 'green']},
-  'flashing red' : {allowableChange: ['red']}
-}
-let lightStatus = 'green'
-function changeLight(change) {
-  if (states[lightStatus].allowableChange.includes(change)) {  // since allowable state transitions are arrays, we can use array methods!
-    lightStatus = change
-  } else {
-    throw('invalid state transition attempted') // throw exits the program 
-    // could also console.log a message
-  }
-}
-changeLight('yellow')
 
-/* 
-at least 5 rooms
-  one locked
-players object
-  let player = {
-    inventory : []
-    health : 10
-    location, present and past : [] use this like a stack with pop and push 
-  }
 
-a person to interact with 
-prompts noting player status based on input / things acquired / persons interacted with
-a way to win (player acquires Rise and Shiner from KKD)
-a way to exit and start over // possibly a way to loose
 
-const readline = require('readline');
-const rl = readline.createInterface(process.stdin, process.stdout);
-function ask(questionText) {
-  return new Promise((resolve, reject) => {
-    rl.question(questionText, resolve);
-  });
-} 
 
-start()
-
-async function start() {
-  console.log
 
