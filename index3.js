@@ -7,7 +7,7 @@ function ask(questionText) {
     readlineInterface.question(questionText, resolve);
   });
 }
-
+// | - - - starter code - do not change above - - - |
 let currentRoom = "outside";
 
 let player = {
@@ -19,7 +19,7 @@ function showInventory() {
   console.log('You are carrying, ' + player.inventory.toString())
 }
 
-le rooms = {
+let rooms = {
   'outside': {canChangeTo: ['sign'],   // outside is also known as "182 Main St."
               welcomeMessage: `182 Main St.
               You are standing on Main Street between Church and South Winooski.
@@ -58,7 +58,7 @@ function enterState(newState) {
     throw 'Invalid state transition attempted - from ' + currentRoom + ' to ' + newState;
   }
 }
-
+// | - - - initialize game  - - - |
 async function start() {
   console.log(rooms[currentRoom].welcomeMessage);
 
@@ -117,8 +117,10 @@ async function start() {
   // list the array of items you are carrying
 
 start();
+// | - - - process functions - do not change below  - - - |
 
-function inputConverter(string) { // standardizes input to lower case, trimmed, string
+// standardizes input to lower case, trimmed, string
+function inputConverter(string) { 
   let converted = string.toString().trim().toLowerCase();
   return converted;
 }
