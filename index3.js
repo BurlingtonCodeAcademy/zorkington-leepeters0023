@@ -40,14 +40,31 @@ let rooms = {
             vestibule. Or an entryway. Or an atrium. Or a narthex.
             But let's forget all that fancy flatlander vocabulary,
             and just call it a foyer. In Vermont, this is pronounced
-            "FO-ee-yurr".
-            A copy of Seven Days lies in a corner.`
-           },
+            "FO-ee-yurr". 
+            You see a stairway ahead pf you. A copy of Seven Days lies in a corner.`
+            },
 
-  'stairway': {canChangeTo: ['hallway']},
-  'hallway': {canChangeTo: ['classroom']},
-  'classroom': {canChangeTo: ['hallway']},
-  'stairway': {canChangeTo: ['foyer']}
+  'stairway': {canChangeTo: ['hallway'],
+               welcomeMessage:
+              `You walk to the top of a long stair way 
+              and arrive at a landing. Ahead of you is a hallway`
+              },
+  'hallway': {canChangeTo: ['classroom'],
+              welcomeMessage:
+              `You have entered a hallway and see the Burlington 
+              Code Academy classroom entrance with a kitchen to its left`
+              },
+  'classroom': {canChangeTo: ['hallway'],
+              welcomeMessage:
+              `You enter the BCA classroom and find instructor Bob lecturing to 
+              an empty classroom about recursion. He's clearly stuck in an infinite loop. 
+              You notice his tea mug is empty`
+               },
+  'kitchen': {canChangeTo : ['hallway'],
+              welcomeMessage:
+              `You enter the kitchen. There, you find some utensils, 
+              a coffee machine, and the ingredients to make some delicious green tea`
+              },
 };
 
 // | - - - - - state machine - - - - - |
@@ -86,21 +103,23 @@ async function start() {
       enterState('foyer')
       console.log(rooms[currentRoom].welcomeMessage);
     } 
-    else if (answer == 'enter code 12345'||answer == 'key in 12345'){ 
+    else if (answer == 'enter code 12345'|| answer == 'key in 12345'){ 
       enterState('outside')
       console.log(rooms[currentRoom].welcomeMessage);
     }
     else if (answer.includes("enter code ") && !answer.includes("12345")) {
       console.log("Bzzzzt! The door is still locked.")
     }
-    else if (currentRoom == 'foyer' && answer == 'take seven days') {
+    else if (currentRoom === 'foyer' && answer == 'take seven days') {
       console.log ('You pick up the paper and leaf through it looking for comics\nand ignoring the articles, just like everbody else does');
       player.inventory.push('seven days')
     }
-    else if (answer == ("drop seven days") && player.inventory.includes("seven days")){
+    else if (answer === ("drop seven days") && player.inventory.includes("seven days")){
       console.log (`You toss the "Seven Days" to the ground.`);
       player.inventory.pop()
-    } else { 
+    } 
+    else if (answer === )
+    else { 
     console.log("Sorry, I don't understand that.");
     }
     if (answer === 'inventory' || answer === 'i') {
