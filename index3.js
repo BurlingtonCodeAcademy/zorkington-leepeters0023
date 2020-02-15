@@ -50,6 +50,9 @@ let rooms = {
   'stairway': {canChangeTo: ['foyer']}
 };
 
+// | - - - - - state machine - - - - - |
+
+// func to govern allowable state (room) transitions 
 function enterState(newState) {
   let validTransitions = rooms[currentRoom].canChangeTo;
   if (validTransitions.includes(newState)) {
@@ -58,7 +61,9 @@ function enterState(newState) {
     throw 'Invalid state transition attempted - from ' + currentRoom + ' to ' + newState;
   }
 }
+
 // | - - - initialize game  - - - |
+
 async function start() {
   console.log(rooms[currentRoom].welcomeMessage);
 
@@ -66,60 +71,52 @@ async function start() {
   answer = inputConverter(answer) // standardizes input to lower case, trimmed, string
   while(answer !== 'exit') {
     if (answer == 'read sign') {
-    enterState('sign')
-    console.log(rooms[currentRoom].welcomeMessage);
-    console.log(currentRoom)
+      enterState('sign')
+      console.log(rooms[currentRoom].welcomeMessage);
+      console.log(currentRoom)
     } 
     else if (answer == 'take sign') {
-    console.log ('That would be selfish. How will other students find their way?')
+      console.log ('That would be selfish. How will other students find their way?')
     } 
     else if (answer == 'open door' || 'open') { 
-    console.log ('The door is locked. There is a keypad on the door handle.')
-    } 
-    else if (answer !== 'open' || 'open door') {
-    console.log('Sorry, I do not know how to ' + answer)
+      console.log ('The door is locked. There is a keypad on the door handle.')
     } 
     else if (currentRoom === 'sign' && answer === 'enter code 12345' || currentRoom === 'sign' && answer === 'key in 12345') {
-    console.log('Success! The door opens. You enter the foyer and the door\nshuts behind you');
-    enterState('foyer')
-    console.log(rooms[currentRoom].welcomeMessage);
+      console.log('Success! The door opens. You enter the foyer and the door\nshuts behind you');
+      enterState('foyer')
+      console.log(rooms[currentRoom].welcomeMessage);
     } 
-    else if (answer == 'enter code 12345'||answer == 'key in 12345')
-    { enterState('outside')
+    else if (answer == 'enter code 12345'||answer == 'key in 12345'){ 
+      enterState('outside')
       console.log(rooms[currentRoom].welcomeMessage);
     }
-   else if (answer.includes("enter code ") && !answer.includes("12345")){
+    else if (answer.includes("enter code ") && !answer.includes("12345")) {
       console.log("Bzzzzt! The door is still locked.")
     }
-    else if (currentRoom == 'foyer' && answer == 'take seven days')   // need to add || 'take paper'
-    {
+    else if (currentRoom == 'foyer' && answer == 'take seven days') {
       console.log ('You pick up the paper and leaf through it looking for comics\nand ignoring the articles, just like everbody else does');
       player.inventory.push('seven days')
     }
-      else if (answer == ("drop seven days") && player.inventory.includes("seven days"))
-      {
-        console.log (`You toss the "Seven Days" to the ground.`);
-        player.inventory.pop('seven days')
-       }
-
- else { 
+    else if (answer == ("drop seven days") && player.inventory.includes("seven days")){
+      console.log (`You toss the "Seven Days" to the ground.`);
+      player.inventory.pop()
+    } else { 
     console.log("Sorry, I don't understand that.");
-  }
-  if (answer === 'inventory') {
+    }
+    if (answer === 'inventory' || answer === 'i') {
     showInventory()
-  }
+    start()
+    }
   answer = await ask('>_');
   }
    process.exit();
 }
 
-  // need to build in the 'i' || 'inventory' || 'take inventory' functionality to 
-  // list the array of items you are carrying
-
 start();
+
 // | - - - process functions - do not change below  - - - |
 
-// standardizes input to lower case, trimmed, string
+// func to standardize input returning a lower case, trimmed, string
 function inputConverter(string) { 
   let converted = string.toString().trim().toLowerCase();
   return converted;
