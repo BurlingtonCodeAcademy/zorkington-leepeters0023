@@ -1,189 +1,167 @@
-/*const readline = require('readline');
+// Project 2 (Zorkington) - Group - Lee Peters & Denis Poirier - BCA Cohort-3 / Spr'20
+
+const readline = require('readline');
+ 
 const readlineInterface = readline.createInterface(process.stdin, process.stdout);
 
 function ask(questionText) {
   return new Promise((resolve, reject) => {
     readlineInterface.question(questionText, resolve);
-  }); 
+  });
 }
-*/
-// remember the StateMachine lecture
-// https://bootcamp.burlingtoncodeacademy.com/lessons/cs/state-machines
+// | - - - starter code - do not change above - - - |
 
-// | - - - - - room creation begin - - - - - |
+let currentRoom = "outside";
 
-class Room {
-  constructor(desc, inv, locked) {
-    this.desc = desc
-    this.inv = inv
-    this.locked = locked
-  }
+// player object 
+let player = {
+  currentState: currentRoom, 
+  inventory: []
 }
 
-let outside = createRoom('message a', [1, 2, 3], 'locked')
-let foyer = createRoom('message b', [5, 6, 7], 'locked')
-let classRoom = createRoom()
-let kitchen = createRoom()
-let cityMarket = createRoom()
-let eMainSt = createRoom()
-let uvmFrat = createRoom()
-let wMainSt = createRoom()
-let cityHallPark = createRoom()
-let kkd = createRoom()
-
-const roomLookUp = {
-  'outside' : outside,
-  'foyer' : foyer,
-  'classRoom' : classRoom,
-  'kitchen' : kitchen,
-  'cityMarket' : cityMarket,
-  'eMainSt' : eMainSt,
-  'uvmFrat' : uvmFrat,
-  'wMainSt' : wMainSt,
-  'cityHallPark' : cityHallPark,
-  'kdd' : kkd
-} 
-
-function createRoom(desc, inv, locked) {
-  return new Room(' ', [], 'locked')
-}
-
-console.log(outside)
-console.log(foyer)
-
-  
-// | - - - - - room creation end - - - - - |
-
-// | - - - - - state machine begin - - - - - |
-/*
-let location = {
-  'outside' : { canChangeTo: [ 'foyer', 'eMainSt', 'wMainSt' ] },
-  'foyer' : { canChangeTo: [ 'outside', 'classRoom' ] },
-  'classRoom' : { canChangeTo: [ 'kitchen' ] },
-  'kitchen' : { canChangeTo: [ 'classRoom' ] },
-  'cityMarket' : { canChangeTo: [ 'eMainSt' ] },
-  'eMainSt' : { canChangeTo: [ 'cityMarket', 'uvmFrat' ] },
-  'uvmFrat' : { canChangeTo: [ 'eMainSt' ] },
-  'wMainSt' : { canChangeTo: [ 'outside', 'cityHallPark', 'kkd' ] },
-  'cityHallPark' : { canChangeTo: [ 'wMainSt' ] },
-  'kdd' : { canChangeTo: [ 'wMainSt' ] }
+let rooms = {
+  'outside': {canChangeTo: ['sign'],   // outside is also known as "182 Main St."
+              welcomeMessage: `182 Main St. You are standing on Main Street between Church and South Winooski. There is a door here. A keypad sits on the handle. On the door is a handwritten sign.
+              (If you ever want to exit, just type - exit )`
+            },
+  'sign':   {canChangeTo: ['foyer', 'outside'],
+             welcomeMessage: `The sign says "Welcome to Burlington Code Academy! Come on up to the third floor. If the door is locked, use the code 12345."`
+            },
+  'foyer': {canChangeTo: ['stairway', 'sign'],
+            welcomeMessage: 
+            `You are in a foyer. Or maybe it's an antechamber. Or a vestibule. Or an entryway. Or an atrium. Or a narthex. But let's forget all that fancy flatlander vocabulary, and just call it a foyer. In Vermont, this is pronounced "FO-ee-yurr". You see a stairway ahead of you. A copy of Seven Days lies in a corner.`
+            },
+  'stairway': {canChangeTo: ['hallway', 'foyer'],
+               welcomeMessage:
+              `You walk to the top of a long stair way and arrive at a landing. Ahead of you is a hallway`
+              },
+  'hallway': {canChangeTo: ['classroom', 'kitchen'],
+              welcomeMessage:
+              `You have entered a hallway and see the Burlington Code Academy classroom entrance with a kitchen to its left`
+              },
+  'classroom': {canChangeTo: ['hallway'],
+              welcomeMessage:
+              `You enter the BCA classroom and find instructor Bob lecturing to an empty classroom about recursion. He's clearly stuck in an infinite loop. You notice his tea mug is empty`
+               },
+  'kitchen': {canChangeTo : ['hallway'],
+              welcomeMessage:
+              `You enter the kitchen. There, you find some utensils, a coffee machine, and the ingredients to make some delicious green tea`
+              },
 };
 
-let currentLocation = "outside";
+// | - - - - - state machine - - - - - |
 
-function changeLocation(newLocation) {
-  let validTransitions = location[currentLocation].canChangeTo;
-  if (validTransitions.includes(newLocation)) {
-    currentLocation = newLocation;
+// func to govern allowable state (room) transitions 
+function enterState(newState) {
+  let validTransitions = rooms[currentRoom].canChangeTo;
+  if (validTransitions.includes(newState)) {
+    currentRoom = newState;
   } else {
-    throw 'Invalid state transition attempted - from ' + currentLocation + ' to ' + newLocation;
+    throw 'Invalid state transition attempted - from ' + currentRoom + ' to ' + newState;
   }
 }
 
-changeLocation(foyer)
-
-// | - - - - - state machine end - - - - - |
-
-// | - - - - player attributes begin - - - - |
-
-let player = {
-  inventory: [],
-  health: []
+// | - - - initialize game  - - - |
+async function directions() {
+  let input = await ask(`Welcome to zorKington, a land of many mysteries and immense beauty. Throughout the game, you will encounter many treasures. To take an item with you, simply type the name of the item. To drop an item, type 'drop_ item name'. To view your inventory, type 'inventory. Press enter to begin.`)
+  if (input.includes('')) {
+    start()
+  } else { 
+    directions() 
   }
+}
 
-let commands = {
-    affirmative: ['y', 'yes', 'ya', 'yeah', 'yeah'],
-    negative: ['no', 'n', 'nope', 'nay'],
-    direction: ['north', 'n', 'south', 's', 'east', 'e', 'west', 'w'],
-    movement: ['go', 'move', 'enter', 'walk'],
-    actions: ['read', 'take', 'use', 'get', 'eat', 'buy', 'make', 'open', 'unlock', 'enter', 'give', 'drop', 'leave']
-  }
-// | - - - - player attributes end - - - - |
-
-start();
-
+// | - - - begin game  - - - |
 async function start() {
-  const welcomeMessage = `182 Main St.
-You are standing on Main Street between Church and South Winooski.
-There is a door here. A keypad sits on the handle.
-On the door is a handwritten sign.`;
-let answer = await ask(welcomeMessage);
-if (answer === commands.actions.includes[answer]) {
-  currentLocation === foyer
-  console.log(currentLocation)
-} 
+  console.log(rooms[currentRoom].welcomeMessage);
 
-  /*console log the sign says x y z
-if answer === actions.includes(answer) 
-  player.inventory.push(item)
+  let answer = await ask('What would you like to do? \n >_');
+      answer = inputConverter(answer) // standardizes input to lower case, trimmed, string
 
-call start function again
+  while(answer !== 'exit') {
+    if (answer === 'read sign') {
+      enterState('sign')
+      console.log(rooms[currentRoom].welcomeMessage);
+    } 
+    if (answer.includes('inventory')) {
+      showInventory()
+      start()
+      }
+    else if (answer === 'take sign') {
+      console.log ('That would be selfish. How will other students find their way?')
+    } 
+    else if (answer.includes('12345')) {
+        console.log('Success! The door opens. You enter the foyer and the door shuts behind you\n ');
+        enterState('foyer')
+        console.log(rooms[currentRoom].welcomeMessage)
+      } 
 
-answer = await ask ' what do you want to do?'
-if answer === actions.includes(answer), desired response here is for player to enter correctly door code
-if code === correct code 
-  currentlocation === foyer
-  console log foyer message
-else 
-  console log incorrect code 
+    else if (answer.includes('take seven days')) {
+      console.log ('You pick up the paper and leaf through it looking for comics\nand ignoring the articles, just like everbody else does. What would you like to do now?');
+      player.inventory.push('seven days')
+    } 
+    //else if (answer.includes('drop') || answer.includes('leave')) {
+      //console.log (`You toss the "Seven Days" to the ground.`);
+      //player.inventory.pop()
+      //start()
+    //}
+    else if (answer.includes('stair') || answer.includes('up')) {
+      enterState('stairway')
+      console.log(rooms[currentRoom].welcomeMessage)
+      start()
+    }
 
-call start function again
+    else if (answer.includes('hall')) {
+      enterState('hallway')
+      console.log(rooms[currentRoom].welcomeMessage);
+    }
 
-answer = await ask 'what do you want to ?'
-if answer === actions.includes(answer) // desired response, player goes up stairs to enter classroom
-  currentlocation === classroom
-  console log classroom message // desired action, player gets tea for bob "leave classroom" -> "enter kitchen"
-....
+    else if (answer.includes('kitchen')) {
+      enterState('kitchen')
+      console.log(rooms[currentRoom].welcomeMessage)
+      if (answer.includes('tea')) {
+        player.inventory.push('tea')
+      } 
+    }
 
-call start function again
+    else if (answer.includes('class')) {
+      enterState('classroom')
+      console.log(rooms[currentRoom].welcomeMessage)
+      if (answer.includes('leave')) {
+        enterState('hallway')
+        console.log(rooms[currentRoom].welcomeMessage)
+        start()
+      }
+    } 
 
-answer = await ask 'what do you want to ?'
-currentlocation === kitchen
-console log kitchen message // desired action, player makes tea "make tea"
-if answer === actions.includes(answer) 
-  player.inventory.push(item)
-else 
-call start function again
+    else if (answer.includes('class')) {
+      enterState('classroom')
+      console.log(rooms[currentRoom].welcomeMessage)
+      if (answer.includes('give bob tea')) {
+        console.log('You win the game!')
+        process.exit
+      }
+    }
+    else {
+      console.log("Sorry, I don't understand that.");
+    }
+  //answer = await ask('What would you like to do? \n >_');  
+   process.exit();
+  }
+  process.exit();
+}
 
-answer = await ask 'what do you want to ?'
-if answer === actions.includes(enter classroom)
-currentlocation === classroom
-console log new classroom message triggerd by second time player enters 
-  -- > Bob asks where is my tea?
-if answer === give tea to bob
-  player.inventory.pop[]
-  console.log here's a coupon for KKD!
-  player.push[coupon]
+directions();
 
-call start function again
+// | - - - process functions - do not change below  - - - |
 
-answer = await ask 'what do you want to ?'
-if answer === actions.includes(leave classroom)
- -> if kitchen, inventory of kitchen must no longer include tea
- -> if foyer, must now be unlocked
-    desired action here is player enters foyer
-if answer === actions.includes(enter street, leave foyer, etc etc)
-currrentlocation === outside
+// func to standardize input returning a lower case, trimmed, string
+function inputConverter(string) { 
+  let converted = string.toString().trim().toLowerCase();
+  return converted;
+}
 
-call start function again
-
-answer = await ask 'what do you want to ?'
-if answer === actions.include(e, east, east main)
-  currentlocation === eMainSt 
-  consoleLog eMainst Message
-
-call start function again
-answer = await ask 'what do you want to ?'
-if answer === actions.includes(city market, north, n)
-  console log cityMarket message
-  process.exit
-*/
-
-
-
-
-
-
-
-
-
+// func to return player inventory at a given time as a string 
+function showInventory() {
+  console.log('You are carrying, ' + player.inventory.toString())
+}
