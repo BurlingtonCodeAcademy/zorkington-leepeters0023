@@ -1,21 +1,19 @@
-// Project 2 (Zorkington) - Group - Lee Peters & Denis Poirier - BCA Cohort-3 / Spr'20
-
 const readline = require('readline');
  
 const readlineInterface = readline.createInterface(process.stdin, process.stdout);
-​
+
 function ask(questionText) {
   return new Promise((resolve, reject) => {
     readlineInterface.question(questionText, resolve);
   });
 }
 // | - - - starter code - do not change above - - - |
-​
+
 let currentRoom = "outside";
-​
+
 // player object 
 let inventory = []
-​
+
 let rooms = {
   'outside': {canChangeTo: ['sign', 'outside'],   // outside is also known as "182 Main St."
               welcomeMessage: `182 Main St. You are standing on Main Street between Church and South Winooski. There is a door here. A keypad sits on the handle.\nOn the door is a handwritten sign.`
@@ -45,19 +43,19 @@ let rooms = {
               `You enter the kitchen. There, you find some utensils, a coffee machine, and the ingredients to make some delicious green tea`
               },
 };
-​
+
 // | - - - - - state machine - - - - - |
-​
+
 // func to govern allowable state (room) transitions 
 function enterState(newState) {
   let validTransitions = rooms[currentRoom].canChangeTo;
   if (validTransitions.includes(newState)) {
     currentRoom = newState;
   } else {
-    throw 'Invalid state transition attempted - from ' + currentRoom + ' to ' + newState;
+    console.log(`Can't go that way`);
   }
 }
-​
+
 // | - - - initialize game  - - - |
 async function directions() {
   let input = await ask(`Welcome to zorKington, a land of many mysteries and immense beauty. Throughout the game, you will encounter many treasures. To take an item with you, simply type the name 'take' and of the item. To drop an item, type 'drop_ item name'. To view your inventory, type 'inventory. \nIf you ever want to exit, just type 'exit'.\nPress enter to begin.`)
@@ -68,15 +66,15 @@ async function directions() {
     directions() 
   }
 }
-​
+
 // | - - - begin game  - - - |
-​
+
 async function start() {
   console.log(rooms[currentRoom].welcomeMessage);
-​
+
   let answer = await ask('What would you like to do? \n >_');
       answer = inputConverter(answer) // standardizes input to lower case, trimmed, string
-​
+
   while(answer !== 'exit') {
     if (answer.includes('read')) {
       enterState('sign')
@@ -95,7 +93,7 @@ async function start() {
         enterState('foyer')
         console.log(rooms[currentRoom].welcomeMessage)
       } 
-​
+
     else if (answer.includes('take seven')) {
       console.log ('You pick up the paper and leaf through it looking for comics\nand ignoring the articles, just like everbody else does.');
       addToInventory('Seven Days')
@@ -109,17 +107,17 @@ async function start() {
       enterState('stairway')
       console.log(rooms[currentRoom].welcomeMessage)
     }
-​
+
     else if (answer.includes('hall')) {
       enterState('hallway')
       console.log(rooms[currentRoom].welcomeMessage);
     }
-​
+
     else if (answer.includes('kitchen')) {
       enterState('kitchen')
       console.log(rooms[currentRoom].welcomeMessage)
     }
-​
+
     else if (answer.includes('take tea') || answer.includes('make tea')) {
       addToInventory('tea')
     } 
@@ -128,7 +126,7 @@ async function start() {
       enterState('classroom')
       console.log(rooms[currentRoom].welcomeMessage)
     } 
-​
+
     else if (answer.includes('give bob tea') || answer.includes('drop tea')) {
       dropFromInventory('tea')
       console.log('You win the game!')
@@ -140,13 +138,13 @@ async function start() {
   answer = await ask('What would you like to do? \n >_') 
   }
 }
-​
-​
-​
+
+
+
 directions();
-​
+
 // | - - - process functions - do not change below  - - - |
-​
+
 // func to standardize input returning a lower case, trimmed, string
 function inputConverter(string) { 
   let converted = string.toString().trim().toLowerCase();
